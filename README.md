@@ -1,1 +1,1 @@
-# apteka_project
+# Mateusz Czernik - Projekt Bazy Danych - Apteka
