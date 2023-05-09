@@ -12,7 +12,7 @@
     <title>VitaFarm - Apteka</title>
 
     <link rel="stylesheet" href="style.css" />
-    <script src="main.js" defer></script>
+    <script src="js/main.js" defer></script>
     <script
       src="https://kit.fontawesome.com/c4587b3804.js"
       crossorigin="anonymous"
@@ -34,9 +34,18 @@
         </button>
       </form>
       <div class="options-box">
-        <button class="option-btn">
+        <button class="option-btn" aria-expanded="false">
           <i class="fa-solid fa-bars"></i>
         </button>
+        <nav class="options-nav-box" data-visible="false">
+          <button class="user-menu">
+            <i class="fa-regular fa-user"></i>
+          </button>
+          <label class="switch">
+            <input type="checkbox" class="switch-box" />
+            <span class="slider round"></span>
+          </label>
+        </nav>
       </div>
     </header>
     <nav class="filter-bar">
@@ -47,10 +56,10 @@
     <main class="main-site">
       <div class="slider-box">
         <div class="sliding-wrapper">
-          <img src="images/apteka1.jpg" alt="" />
-          <img src="images/apteka2.jpg" alt="" />
-          <img src="images/apteka3.jpg" alt="" />
-          <img src="images/apteka4.jpg" alt="" />
+          <img src="images/apteka1.jpg" alt="" class="image1-slider images" />
+          <img src="images/apteka2.jpg" alt="" class="image2-slider images" />
+          <img src="images/apteka3.jpg" alt="" class="image3-slider images" />
+          <img src="images/apteka4.jpg" alt="" class="image4-slider images" />
         </div>
       </div>
       <div class="specific-section">
