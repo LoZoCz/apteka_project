@@ -1,0 +1,33 @@
+Uczeń otrzymuje od nauczyciela indywidualny temat projektu.
+
+Projekt  - praca semestralna
+składa się z:
+-dokumentacji
+-screenu diagramu ER (wkleić również do właściwego rozdziału)
+-pliku bazy danych i skrytpu dostępu do bazy przez stronę WWW
+
+w dokumencie tekstowym (strona tytułowa, nagłówki,stopki, automatyczny spis treści itd)
+Rozdziały wg punktów:
+
+1.*analiza środowiska: opis co się tam dzieje, na czym firma zarabia, jakie ma koszty itd - wymienić (od myślników) wszystkie możliwe zdarzenia -- określenie zbioru danych --ogólne określenie encji, określenie 15 dowolnych kwerend analizowanego systemu bazodanowego
+2. określenie atrybutów encji (i ich właściwości) niezbęnych do realizacji założonych kwerend (zapytań), normalizacja danych (do 3ciej postaci normalnej) rozpisać tabele i ich kolumny, sprawdzić czy spełnione są zasady.
+3.* utworzenie diagramu ER w programie typu CASE - udokumentować screenem lub wydrukiem, wkleić do projektu
+4.utworzenie bazy danych (np poprzez import diagramu) i wprowadzenie danych
+5.*utworzenie kwerend realizujących założone w pkt 1 funkcje
+  (kody kwerend wkleić do tego punktu projektu). 15 funcji analizowanej bazy danych wykonać jako odpowiednio nazwane  perspektywy (widoki) -- przysłać plik (*.sql) ze swoją bazą danych
+
+6. utworzyć interfejs do bazy danych poprzez przeglądarkę WWW (plik z kodem przysłać)
+7.* przysłać końcową, ostateczną wersję dokumentacji projektowej w formie pliku pdf. - w każdym rozdziale opis, screeny...itd) - OCENA ZA CAŁY PROJEKT
+------------------------------------------------------------------------
+* oznaczają oceny cząstkowe + ocena za całość o wadze projektu
+
+
+Harmonogram sładania kolejnych rozdziałów do oceny (e-mailem, w formacie pdf)
+
+1. do 06.04
+2. treść 15 kwerend z wybranego zakresu danych -  do 14.04
+(np. imię, nazwisko pracowników działu xxxx, których stawka jest niższa os średniej stawki w tym dziale).
+
+Pozostałe terminy podam w terminie późniejszym
+
+
