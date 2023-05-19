@@ -182,9 +182,7 @@
           }
 
           if (isset($_POST['szczegolyBtn'])) {
-            $sql = "SELECT lekarstwa.nazwa_leku, szczegoly_zamowienia.*
-            FROM szczegoly_zamowienia
-            INNER JOIN lekarstwa ON szczegoly_zamowienia.id_lekarstwa = lekarstwa.id_lekarstwa";
+            $sql = "SELECT szczegoly_zamowienia.id_zamowienia, szczegoly_zamowienia.id_lekarstwa, lekarstwa.nazwa_leku, szczegoly_zamowienia.ilosc_produktow FROM szczegoly_zamowienia INNER JOIN lekarstwa ON szczegoly_zamowienia.id_lekarstwa = lekarstwa.id_lekarstwa;";
             $result = mysqli_query($conn, $sql);
 
             echo('<caption>Tabela szczegółów zamówień</caption>');
@@ -194,7 +192,7 @@
           
             if (mysqli_num_rows($result) > 0) {
               while ($row = mysqli_fetch_row($result)) {
-                echo "<tr><td>" . $row[2] . "</td><td>" . $row[1] . "</td><td>" . $row[0] . "</td><td>" . $row[3] . "</td></tr>";
+                echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>";
               }
             } else {
               echo "0 results";

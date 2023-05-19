@@ -1,3 +1,6 @@
+<?php
+  session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -61,7 +64,7 @@
             $name = 'localhost';
             $login = 'root';
             $paswd = '';
-            $base = 'text_apteka';
+            $base = 'apteka';
 
             $conn = mysqli_connect($name, $login, $paswd, $base);
 
@@ -74,7 +77,7 @@
               @$nazwisko = $_POST['check-surname'];
 
               if(empty($imie) && empty($nazwisko)){
-                echo('uzupelnij formularz');
+                echo('Uzupelnij formularz');
               } else {
                 $checkQue = "SELECT `imie`, `nazwisko` FROM `klienci` WHERE imie='$imie' AND nazwisko='$nazwisko'";
                 $sqlQuery = mysqli_query($conn, $checkQue);
@@ -84,22 +87,24 @@
                 } else {
                   if(mysqli_num_rows($sqlQuery) > 0){
                     echo('<p class="checkInfo">Twoje konto istnieje</p>');
+                    
+                    $klient = "SELECT `id_klienta` FROM `klienci` WHERE imie='$imie' AND nazwisko='$nazwisko'";
+                    $klientQuery = mysqli_query($conn, $klient);
+                    $klientID = mysqli_fetch_assoc($klientQuery);
+                    $globalID = $klientID['id_klienta'];
+
+                    $_SESSION['globalID'] = $globalID;
+                    // echo($globalID);
                   } else {
                     echo('<p class="checkInfo">Nie jesteś zapisany do naszej bazy danych</p>');
                   }
                 }
-
-                $klient = "SELECT `id_klienta` FROM `klienci` WHERE imie='$imie' AND nazwisko='$nazwisko'";
-                $klientQuery = mysqli_query($conn, $klient);
-                $klientID = mysqli_fetch_assoc($klientQuery);
-                $globalID = $klientID['id_klienta'];
-                // echo($globalID);
               }
             }
           ?>
           </div>
           <div class="liczbaIBtn">
-            <input type="number" name="iloscLekow" class="iloscLekow">
+            <input type="number" name="iloscLekow" class="iloscLekow" placeholder="Podaj ilość produktów">
             <button class="zamowBtn" type="submit" name="zamowBtn">ZAMÓW</button>
           </div>
         </div>
@@ -122,30 +127,53 @@
         </div>
         <?php
           if(isset($_POST['zamowBtn'])){
-            // echo('wybrano: ' . $_POST['lek']);
-            if(!empty($_POST['iloscLekow'])){
-              $ilosc = $_POST['iloscLekow'];
-              if(!empty($lek = $_POST['lek'])){
-                $lekInp = $_POST['lek'];
+            if(!empty($_SESSION['globalID'])){
+              if(!empty($_POST['iloscLekow'])){
+                $ilosc = $_POST['iloscLekow'];
+                if(!empty($_POST['lek'])){
+                  $lekInp = $_POST['lek'];
+  
+                  $lekarstwo = "SELECT `id_lekarstwa` FROM `lekarstwa` WHERE nazwa_leku='$lekInp'";             
+                  $lekQuery = mysqli_query($conn, $lekarstwo);
+                  $szukLekID = mysqli_fetch_assoc($lekQuery);
+                  $lekID = $szukLekID['id_lekarstwa'];
+  
+                  $dataDnia = date("Y-m-d");
+  
+                  $zamIDKlienta = $_SESSION['globalID'];
+  
+                  $idZam = "SELECT `id_zamowienia`FROM `szczegoly_zamowienia` WHERE 1 ORDER BY `id_zamowienia` DESC LIMIT 1;";             
+                  $zamIdQuery = mysqli_query($conn, $idZam);
+                  $szukZamID = mysqli_fetch_assoc($zamIdQuery);
+                  $zamID = $szukZamID['id_zamowienia'];
+                  $newZamID = $zamID + 1;
+  
+  
+                  $zamowienieQuery = "INSERT INTO `zamowienia`(`id_klienta`, `data_zamowienia`, `status_zamowienia`) VALUES ('$zamIDKlienta','$dataDnia','Złożone')";
+                  mysqli_query($conn, $zamowienieQuery);
+            
+                  // Pobierz wartość id_zamowienia dla nowo dodanego zamówienia
+                  $lastInsertedId = mysqli_insert_id($conn);
+            
+                  // Dodaj rekord do tabeli szczegoly_zamowienia
+                  $szczegolyQuery = "INSERT INTO `szczegoly_zamowienia`(`id_zamowienia`, `id_lekarstwa`, `ilosc_produktow`) VALUES ('$lastInsertedId','$lekID','$ilosc')";
+                  mysqli_query($conn, $szczegolyQuery);
+            
+                  // echo('Nazwa leku: ' . $lekInp . '<br> ID lekarstwa: ' . $lekID . '<br> Data: ' . $dataDnia . '<br> ID zamowienia: ' . $lastInsertedId . '<br> Ilosc leków: ' . $ilosc . '<br> ID klienta: ' . $_SESSION['globalID']);
+                  echo('Twoje zamówienie zostało złożone.');
 
-                $lekarstwo = "SELECT `id_lekarstwa` FROM `lekarstwa` WHERE nazwa_leku='$lekInp'";             
-                $lekQuery = mysqli_query($conn, $lekarstwo);
-                $szukLekID = mysqli_fetch_assoc($lekQuery);
-                $lekID = $klientID['id_lekarstwa'];
-
-                $zam = "INSERT INTO `zamowienia`(`id_klienta`, `data_zamowienia`, `status_zamowienia`) VALUES ('$globalID','$lekID','Złożone')";
-                mysqli_query($conn, $zam);
-
-                $idZam = "SELECT `id_zamowienia`FROM `szczegoly_zamowienia` WHERE 1 ORDER BY `id_zamowienia` DESC LIMIT 1;";             
-                $zamIdQuery = mysqli_query($conn, $idZam);
-                $szukLekID = mysqli_fetch_assoc($zamIdQuery);
-                $lekID = $szukLekID['id_zamowienia'];
-
+                  session_destroy();
+                }
               }
+            } else {
+              echo('Sprawdz profil klienta.');
             }
           }
         ?>
       </form>
     </main>
+    <?php
+      mysqli_close($conn);
+    ?>
   </body>
 </html>
